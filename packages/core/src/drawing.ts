@@ -36,6 +36,7 @@ export class SvgDrawing extends Renderer {
       close,
       delay,
       fill,
+      // onCompleteDrawCallback()
       ...rendOpt
     }: DrawingOption = {}
   ) {
