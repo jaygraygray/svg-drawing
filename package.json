@@ -8,6 +8,7 @@
   "scripts": {
     "clean": "lerna clean; rimraf ./coverage ./packages/**/{lib,dist,node_modules}; yarn cache clean",
     "build": "lerna run build",
+    "build-local": "npm run build && rm -rf node_modules",
     "dev": "yarn build; concurrently yarn:dev:{main,tsc}",
     "dev:main": "yarn lerna run dev --concurrency 1 --parallel --stream",
     "dev:tsc": "yarn lerna run dev:tsc --concurrency 1 --parallel --stream",
