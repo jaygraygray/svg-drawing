@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Renderer, RendererOption } from './renderer'
 import { Path, Point, Command, COMMAND_TYPE } from './svg'
 import { BezierCurve } from './bezier'
@@ -12,7 +11,7 @@ export interface DrawingOption extends RendererOption {
   curve?: boolean
   delay?: number
   fill?: string
-  onCompleteDrawCallback?: any
+  onCompleteDrawCallback?: undefined | (() => void)
 }
 
 export class SvgDrawing extends Renderer {
@@ -23,6 +22,7 @@ export class SvgDrawing extends Renderer {
   public close: boolean
   public delay: number
   public bezier: BezierCurve
+  public onCompleteDrawCallback: undefined | (() => void)
   private _drawPath: Path | null
   private _drawMoveThrottle: this['drawMove']
   private _listenerOption: ReturnType<typeof getPassiveOptions>
@@ -46,6 +46,7 @@ export class SvgDrawing extends Renderer {
     /**
      * Setup parameter
      */
+    this.onCompleteDrawCallback = onCompleteDrawCallback ?? undefined
     this.penColor = penColor ?? '#000'
     this.penWidth = penWidth ?? 1
     this.curve = curve ?? true
@@ -138,6 +139,7 @@ export class SvgDrawing extends Renderer {
     }
     this._drawPath = null
     this.update()
+    console.log(':(:(:( draw ended')
   }
 
   private _addDrawPoint(po: [number, number]) {
@@ -190,11 +192,13 @@ export class SvgDrawing extends Renderer {
   }
 
   private _handleEnd(ev: TouchEvent | MouseEvent | PointerEvent) {
-    if (typeof onCompleteDrawCallback === 'function') {
-      onCompleteDrawCallback()
-    }
+    console.log('handleNed, so close...')
     ev.preventDefault()
     this.drawEnd()
+    if (this.onCompleteDrawCallback) {
+      console.log('>>>>>>DING DONG MOTHER FUCKER ')
+      this.onCompleteDrawCallback()
+    }
   }
 
   private _handleDrawForTouch(ev: TouchEvent) {
