@@ -12,6 +12,7 @@ export interface DrawingOption extends RendererOption {
   curve?: boolean
   delay?: number
   fill?: string
+  onCompleteDrawCallback?: any
 }
 
 export class SvgDrawing extends Renderer {
