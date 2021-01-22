@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Renderer, RendererOption } from './renderer'
 import { Path, Point, Command, COMMAND_TYPE } from './svg'
 import { BezierCurve } from './bezier'
@@ -36,7 +37,7 @@ export class SvgDrawing extends Renderer {
       close,
       delay,
       fill,
-      // onCompleteDrawCallback()
+      onCompleteDrawCallback,
       ...rendOpt
     }: DrawingOption = {}
   ) {
@@ -188,6 +189,9 @@ export class SvgDrawing extends Renderer {
   }
 
   private _handleEnd(ev: TouchEvent | MouseEvent | PointerEvent) {
+    if (typeof onCompleteDrawCallback === 'function') {
+      onCompleteDrawCallback()
+    }
     ev.preventDefault()
     this.drawEnd()
   }
